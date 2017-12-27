@@ -197,6 +197,7 @@ $(KERN_OBJECTS): %.o: %.c bpf_helpers.h
 	    -Wno-compare-distinct-pointer-types \
 	    -Wno-gnu-variable-sized-type-not-at-end \
 	    -Wno-tautological-compare \
+		-Wno-address-of-packed-member \
 	    -O2 -emit-llvm -c $<
 	$(LLC) -march=bpf -filetype=obj -o $@ ${@:.o=.ll}
 
