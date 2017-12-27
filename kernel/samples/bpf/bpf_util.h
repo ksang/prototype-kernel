@@ -20,12 +20,16 @@ static inline unsigned int bpf_num_possible_cpus(void)
 	}
 
 	while (fgets(buff, sizeof(buff), fp)) {
-		if (sscanf(buff, "%u-%u", &start, &end) == 2) {
-			possible_cpus = start == 0 ? end + 1 : 0;
-			break;
+		switch(sscanf(buff, "%u-%u", &start, &end)) {
+			case 1:
+				possible_cpus = start == 0 ? 1 : 0;
+				goto out;
+			case 2:
+				possible_cpus = start == 0 ? end + 1 : 0;
+				goto out;
 		}
 	}
-
+out:
 	fclose(fp);
 	if (!possible_cpus) {
 		printf("Failed to retrieve # possible CPUs!\n");
